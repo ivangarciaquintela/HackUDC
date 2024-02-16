@@ -1,1 +1,1 @@
-# HackUDC
+# HackUDC (https://hackudc.gpul.org/)

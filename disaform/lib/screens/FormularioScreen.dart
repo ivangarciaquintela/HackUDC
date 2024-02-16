@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:disaform/models/formType.dart'; // Asegúrate de que la ruta sea correcta
+import 'package:disaform/services/apiservice.dart'; // Asegúrate de que la ruta sea correcta
 
-// Definición de la nueva pantalla del formulario
 class FormularioScreen extends StatelessWidget {
   final int formularioId;
 
@@ -15,8 +16,6 @@ class FormularioScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.send),
             onPressed: () {
-              // Aquí puedes agregar la lógica para enviar el formulario
-              // Por ahora, solo imprime un mensaje en la consola
               print('Formulario $formularioId enviado');
             },
           ),
@@ -35,14 +34,20 @@ void main() {
   ));
 }
 
-// Ejemplo de uso desde una pantalla principal
-class MainScreen extends StatelessWidget {
-  // Lista de formularios con descripciones
-  final List<Map<String, String>> formularios = [
-    {'nombre': 'Primer formulario', 'descripcion': 'Descripción del primer formulario'},
-    {'nombre': 'Segundo formulario', 'descripcion': 'Descripción del segundo formulario'},
-    {'nombre': 'Tercer formulario', 'descripcion': 'Descripción del tercer formulario'},
-  ];
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final ApiService apiService = ApiService();
+  late Future<List<FormType>> formTypesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    formTypesFuture = apiService.getFormTypes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,26 +55,41 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Pantalla Principal'),
       ),
-      body: ListView.builder(
-        itemCount: formularios.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(formularios[index]['nombre']!),
-            subtitle: Text(formularios[index]['descripcion']!),
-            onTap: () {
-              _navigateToFormularioScreen(context, index + 1);
-            },
-          );
+      body: FutureBuilder<List<FormType>>(
+        future: formTypesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            List<FormType> formTypes = snapshot.data!;
+            return ListView.builder(
+              itemCount: formTypes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(formTypes[index].formTypeName),
+                  subtitle: Text(formTypes[index].formTypeId.toString()),
+                  onTap: () {
+                    _navigateToFormularioScreen(
+                        context, formTypes[index].formTypeId);
+                  },
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('No hay datos disponibles'));
+          }
         },
       ),
     );
   }
 
-  // Función para navegar a la pantalla del formulario
   void _navigateToFormularioScreen(BuildContext context, int formularioId) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FormularioScreen(formularioId: formularioId)),
+      MaterialPageRoute(
+          builder: (context) => FormularioScreen(formularioId: formularioId)),
     );
   }
 }

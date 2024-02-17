@@ -23,7 +23,7 @@ class _SearchScreenPageState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Búsqueda'),
+        title: Text('Búsqueda de Formularios'),
       ),
       body: Column(
         children: [
@@ -35,7 +35,6 @@ class _SearchScreenPageState extends State<SearchScreen> {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      labelText: 'Buscar',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -43,7 +42,7 @@ class _SearchScreenPageState extends State<SearchScreen> {
                 SizedBox(width: 8.0),
                 ElevatedButton(
                   onPressed: _search,
-                  child: Text('Buscar'),
+                  child: Icon(Icons.search),
                 ),
               ],
             ),
@@ -54,6 +53,7 @@ class _SearchScreenPageState extends State<SearchScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(_searchResults[index]),
+                  //onTap: ,
                   // Aquí puedes agregar más elementos a tu ListTile según tus necesidades.
                 );
               },

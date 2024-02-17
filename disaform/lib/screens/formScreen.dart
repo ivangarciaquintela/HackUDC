@@ -1,9 +1,12 @@
 
+<<<<<<< Updated upstream
 import 'package:disaform/controller/form_controller.dart';
 import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/models/formSchema.dart';
 import 'package:disaform/services/apiservice.dart';
 import 'package:disaform/widgets/dynamicWidget.dart';
+=======
+>>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 
 class FormularioScreen extends StatelessWidget {
@@ -15,10 +18,14 @@ class FormularioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //obtenemos el formulario especifico
+<<<<<<< Updated upstream
     Future<FormSchema> f =  apiService.getFormType(formularioId);
     FormSchema fs  ;
     f.then((value) => print(value.formTypeId));
     var a = 1;
+=======
+    
+>>>>>>> Stashed changes
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulario $formularioId'),
@@ -32,6 +39,7 @@ class FormularioScreen extends StatelessWidget {
         ],
       ),
       body: Center(
+        child : Container()
         //child: Text('Este es el formulario $formularioId'),
         //child: DynamicFormField(schema: ,)
       ),

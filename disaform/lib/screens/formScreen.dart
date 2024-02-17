@@ -118,10 +118,10 @@ class _FormularioScreenState extends State<FormularioScreen> {
 
   bool validate_form(FormSchema schema, FormItem form) {
     for (FormFieldSchema field in schema.formFields) {
-      if (field.fieldRequired) {
+      if (field.fieldRequired && field.fieldDependentOn == null) {
         if (form.formFields
             .where((element) =>
-                element.fieldId == field.fieldId && element.value != null)
+                element.fieldId == field.fieldId && element.value != null && field.fieldDefaultValue != null)
             .isEmpty) {
           showDialog(
             context: context,

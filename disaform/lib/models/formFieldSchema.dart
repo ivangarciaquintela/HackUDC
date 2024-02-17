@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:disaform/models/formField.dart';
+
 class FormFieldSchema {
   final int fieldId;
   final String fieldName;
@@ -10,7 +14,7 @@ class FormFieldSchema {
   dynamic
       fieldDefaultValue; // dynamic to accommodate different types of default values
   final String fieldGroup;
-  final Map<String, dynamic>?
+  final FormField?
       fieldDependentOn; // Optional as not all fields might have dependencies
   final Map<String, dynamic>?
       fieldValidations; // dynamic to accommodate different types of validations or options
@@ -26,7 +30,7 @@ class FormFieldSchema {
     this.fieldDefaultValue,
     required this.fieldGroup,
     this.fieldDependentOn,
-    required this.fieldValidations,
+    this.fieldValidations,
   });
 
   factory FormFieldSchema.fromJson(Map<String, dynamic> json) {
@@ -40,7 +44,7 @@ class FormFieldSchema {
       fieldReadonly: json['field_readonly'],
       fieldDefaultValue: json['field_default_value'],
       fieldGroup: json['field_group'] ?? "",
-      fieldDependentOn: json['field_dependent_on'],
+      fieldDependentOn: json['field_dependent_on'] != null ? FormField(fieldId: int.parse(json['field_dependent_on']['field_id']), value: json['field_dependent_on']['field_value']) : null,
       fieldValidations: json['field_validations'],
     );
   }

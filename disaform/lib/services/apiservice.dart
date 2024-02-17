@@ -9,7 +9,7 @@ import 'dart:convert';
 
 class ApiService {
   static const String URI =
-      'https://8dcf1df3-8761-4065-bae0-aaba62838256.mock.pstmn.io/';
+      'https://695f223f-0edb-42c1-a127-ed6674f679d8.mock.pstmn.io/';
 
   Future<List<FormType>> getFormTypes() async {
     final response = await http.get(Uri.parse(URI + 'api/v1/formTypes'));
@@ -53,8 +53,8 @@ class ApiService {
     Map<String, String> headers = {
       'mock': '1',
     };
-    final response = await http.post(Uri.parse(URI + 'api/v1/forms'), headers: headers,
-        body: formItem.toJson());
+    final response = await http.post(Uri.parse(URI + 'api/v1/forms'),
+        headers: headers, body: formItem.toJson());
 
     if (response.statusCode == 201) {
       print('Post correcto');

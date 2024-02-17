@@ -5,6 +5,7 @@ import 'package:disaform/models/formFieldSchema.dart';
 import 'package:disaform/models/formItem.dart';
 import 'package:disaform/models/formSchema.dart';
 import 'package:disaform/models/formShortItem.dart';
+import 'package:disaform/widgets/dynamicReadFieldWidget.dart';
 import 'package:disaform/widgets/dynamicWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -92,13 +93,7 @@ class _FormularioScreenState extends State<ReadScreen> {
           }
         }
         formFieldSchema.fieldDefaultValue = defaultValue;
-        return DynamicFormField(
-          schema: formFieldSchema,
-          onChanged: (value) {
-            // Almacena el valor del campo en el mapa
-            _fieldValues[formFieldSchema.fieldId] = value;
-          },
-        );
+        return DynamicReadFieldDisplay(schema: formFieldSchema);
       },
     );
   }

@@ -24,7 +24,7 @@ class _DynamicReadFieldDisplayState extends State<DynamicReadFieldDisplay> {
       }
     }
     return Container(
-      margin: EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(25.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -227,7 +227,7 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
               String pattern = widget.schema.fieldValidations?['format'];
               if (!RegExp(pattern).hasMatch(value)) return "Error, formato inadecuado";
           }
-          if (fieldValidations.containsKey('min_length') && ((value.length) > fieldValidations['min_length'])) {
+          if (fieldValidations.containsKey('min_length') && ((value.length) < fieldValidations['min_length'])) {
             return "Error, longitud mínima = ${fieldValidations['min_length']} ";
           }
           if (fieldValidations.containsKey('max_length') && ((value.length) > fieldValidations['max_length'])) {

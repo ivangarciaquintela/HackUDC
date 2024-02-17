@@ -7,7 +7,7 @@ class FormFieldSchema {
   final String?
       fieldDescription; // Optional since not all fields might have a description
   final bool? fieldReadonly;
-  final dynamic
+  dynamic
       fieldDefaultValue; // dynamic to accommodate different types of default values
   final String fieldGroup;
   final String?
@@ -39,7 +39,7 @@ class FormFieldSchema {
       fieldDescription: json['field_description'],
       fieldReadonly: json['field_readonly'],
       fieldDefaultValue: json['field_default_value'],
-      fieldGroup: json['field_group'] ??"",
+      fieldGroup: json['field_group'] ?? "",
       //fieldDependentOn: json['field_dependent_on'],
       //fieldValidations: json['field_validations'],
     );

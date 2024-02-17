@@ -44,7 +44,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
             icon: Icon(Icons.send),
             onPressed: () {
               _sendForm();
-              print('Formulario : ${widget.formularioName} enviado');
             },
           ),
         ],
@@ -77,12 +76,8 @@ class _FormularioScreenState extends State<FormularioScreen> {
     body['form_type_id'] = _formSchema.formTypeId;
     body['title_field'] = _formSchema.titleField;
 
-    print(body);
     FormItem form = FormItem.fromJson(body);
-    //validate?
-    if (!validate_form(_formSchema, form)) {
-      print('mallll');
-    } else {
+    if (validate_form(_formSchema, form)) {
       apiService2.postForm(form);
       showDialog(
         context: context,

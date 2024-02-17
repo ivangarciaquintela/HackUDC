@@ -59,7 +59,6 @@ class ApiService {
     if (response.statusCode == 201) {
       print('Post correcto');
     } else {
-      print(response.statusCode);
       throw Exception("Error al enviar el formulario");
     }
   }

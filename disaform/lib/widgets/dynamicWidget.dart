@@ -17,7 +17,7 @@ class DynamicFormField extends StatefulWidget {
 }
 
 class _DynamicFormFieldState extends State<DynamicFormField> {
-  dynamic? _fieldValue; // Variable para almacenar el valor del campo
+  dynamic _fieldValue; // Variable para almacenar el valor del campo
 
   @override
   Widget build(BuildContext context) {

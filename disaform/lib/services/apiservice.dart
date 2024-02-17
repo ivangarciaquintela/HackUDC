@@ -53,8 +53,10 @@ class ApiService {
     final response = await http.post(Uri.parse(URI + 'api/v1/forms'),
         body: formItem.toJson());
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
+
     } else {
+      print(response.statusCode);
       throw Exception("Error al enviar el formulario");
     }
   }

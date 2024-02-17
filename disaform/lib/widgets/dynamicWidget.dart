@@ -1,5 +1,6 @@
 import 'package:disaform/models/formFieldSchema.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class DynamicFormField extends StatefulWidget {
@@ -13,7 +14,7 @@ class DynamicFormField extends StatefulWidget {
 }
 
 class _DynamicFormFieldState extends State<DynamicFormField> {
-  String? _fieldValue; // Variable para almacenar el valor del campo
+  dynamic? _fieldValue; // Variable para almacenar el valor del campo
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +35,12 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
   }
 
   Widget _buildField(BuildContext context) {
-    switch (widget.schema.fieldType) {
-      case 'text':
+    switch (widget.schema.fieldType.toLowerCase()) {
+      case 'text': case 'string':
         return TextFormField(
           decoration: InputDecoration(
             hintText: widget.schema.fieldDescription,
+            hintStyle: TextStyle(color: Colors.blueGrey),
           ),
           readOnly: widget.schema.fieldReadonly ?? false,
           initialValue: widget.schema.fieldDefaultValue,
@@ -49,22 +51,26 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
             }
           },
         );
-      case 'number':
+      case 'number': case 'int' : case 'int32' : case 'int64' :
         return TextFormField(
           decoration: InputDecoration(
-            hintText: widget.schema.fieldDescription,
-          ),
-          readOnly: widget.schema.fieldReadonly ?? false,
-          initialValue: widget.schema.fieldDefaultValue?.toString(),
-          keyboardType: TextInputType.number,
-          onChanged: (value) {
-            _fieldValue = value; // Almacenar el valor del campo en la variable local
-            if (widget.onChanged != null) {
-              widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
-            }
-          },
-        );
-      case 'date':
+          hintText: widget.schema.fieldDescription,
+          hintStyle: TextStyle(color: Colors.blueGrey), 
+        ),
+        readOnly: widget.schema.fieldReadonly ?? false,
+        initialValue: widget.schema.fieldDefaultValue?.toString(),
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        ],
+        onChanged: (value) {
+          _fieldValue = value; // Almacenar el valor del campo en la variable local
+          if (widget.onChanged != null) {
+            widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
+          }
+    },
+  );
+      case 'date': case 'datetime' :
       return InkWell(
         onTap: () {
           _selectDate(context);
@@ -84,13 +90,19 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
           ),
         ),
       );
-      case 'select':
+      case 'select': case 'selection' :
         return Container(); // Implementa según tu solución.
-      case 'checkbox':
+      case 'boolean': case 'checkbox' :
         return CheckboxListTile(
-          title: Text(widget.schema.fieldName),
-          value: widget.schema.fieldDefaultValue ?? false,
-          onChanged: (bool? value) {},
+          value: _fieldValue ?? widget.schema.fieldDefaultValue ?? false,
+          onChanged: (bool? value) {
+          setState(() {
+            _fieldValue = value;
+          if (widget.onChanged != null) {
+          widget.onChanged!(_fieldValue.toString());
+        }
+      });
+    },
         );
       default:
         return Text('Tipo de campo no soportado');

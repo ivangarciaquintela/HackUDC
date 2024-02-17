@@ -25,10 +25,10 @@ class FormItem {
 
   Map<String, dynamic> toJson() {
     return {
-      'form_id': formId,
-      'form_type_id': formTypeId,
-      'title_field': titleField,
-      'form_fields': formFields,
+      'form_id': formId.toString(),
+      'form_type_id': formTypeId.toString(),
+      'title_field': titleField.toString(),
+      'form_fields': formFields.toString(),
     };
   }
 }

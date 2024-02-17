@@ -1,10 +1,18 @@
 import 'package:disaform/models/formFieldSchema.dart';
 import 'package:flutter/material.dart';
 
-class DynamicFormField extends StatelessWidget {
+class DynamicFormField extends StatefulWidget {
   final FormFieldSchema schema;
+  final void Function(String?)? onChanged; // Función de devolución de llamada para manejar el cambio de valor
 
-  DynamicFormField({required this.schema});
+  DynamicFormField({required this.schema, this.onChanged});
+
+  @override
+  _DynamicFormFieldState createState() => _DynamicFormFieldState();
+}
+
+class _DynamicFormFieldState extends State<DynamicFormField> {
+  String? _fieldValue; // Variable para almacenar el valor del campo
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +22,7 @@ class DynamicFormField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            schema.fieldName,
+            widget.schema.fieldName,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 10.0),
@@ -25,36 +33,49 @@ class DynamicFormField extends StatelessWidget {
   }
 
   Widget _buildField(BuildContext context) {
-    switch (schema.fieldType) {
+    switch (widget.schema.fieldType) {
       case 'text':
         return TextFormField(
           decoration: InputDecoration(
-            hintText: schema.fieldDescription,
+            hintText: widget.schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly ?? false,
-          initialValue: schema.fieldDefaultValue,
+          readOnly: widget.schema.fieldReadonly ?? false,
+          initialValue: widget.schema.fieldDefaultValue,
+          onChanged: (value) {
+            _fieldValue = value; // Almacenar el valor del campo en la variable local
+            if (widget.onChanged != null) {
+              widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
+            }
+          },
         );
       case 'number':
         return TextFormField(
           decoration: InputDecoration(
-            hintText: schema.fieldDescription,
+            hintText: widget.schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly ?? false,
-          initialValue: schema.fieldDefaultValue?.toString(),
+          readOnly: widget.schema.fieldReadonly ?? false,
+          initialValue: widget.schema.fieldDefaultValue?.toString(),
           keyboardType: TextInputType.number,
+          onChanged: (value) {
+            _fieldValue = value; // Almacenar el valor del campo en la variable local
+            if (widget.onChanged != null) {
+              widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
+            }
+          },
         );
       case 'date':
-        return Container(); // Implementa según tu solución.
+        return Container();
       case 'selection':
         return Container(); // Implementa según tu solución.
       case 'checkbox':
         return CheckboxListTile(
-          title: Text(schema.fieldName),
-          value: schema.fieldDefaultValue ?? false,
+          title: Text(widget.schema.fieldName),
+          value: widget.schema.fieldDefaultValue ?? false,
           onChanged: (bool? value) {},
         );
       default:
         return Text('Tipo de campo no soportado');
     }
   }
+
 }

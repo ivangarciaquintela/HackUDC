@@ -39,10 +39,9 @@ class _CreateScreenState extends State<CreateScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(formTypes[index].formTypeName),
-                  subtitle: Text(formTypes[index].formTypeId.toString()),
                   onTap: () {
                     _navigateToFormularioScreen(
-                        context, formTypes[index].formTypeId);
+                        context, formTypes[index].formTypeId,formTypes[index].formTypeName);
                   },
                 );
               },
@@ -55,11 +54,11 @@ class _CreateScreenState extends State<CreateScreen> {
     );
   }
 
-  void _navigateToFormularioScreen(BuildContext context, int formularioId) {
+  void _navigateToFormularioScreen(BuildContext context, int formularioId, String formularioName) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => FormularioScreen(formularioId: formularioId)),
+          builder: (context) => FormularioScreen(formularioId: formularioId, formularioName:  formularioName)),
     );
   }
 }

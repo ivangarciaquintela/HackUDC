@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class FormularioScreen extends StatefulWidget {
   final int formularioId;
+  final String formularioName;
 
-  FormularioScreen({required this.formularioId});
+  FormularioScreen({required this.formularioId, required this.formularioName});
 
   @override
   State<FormularioScreen> createState() => _FormularioScreenState();
@@ -30,12 +31,12 @@ class _FormularioScreenState extends State<FormularioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulario ${widget.formularioId}'),
+        title: Text('${widget.formularioName}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.send),
             onPressed: () {
-              print('Formulario ${widget.formularioId} enviado');
+              print('Formulario : ${widget.formularioName} enviado');
             },
           ),
         ],

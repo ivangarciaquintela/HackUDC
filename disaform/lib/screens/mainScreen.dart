@@ -32,7 +32,7 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20), // Separación entre los botones
+            SizedBox(height: 50), // Separación entre los botones
             ElevatedButton(
               onPressed: () {
                 _navigateToCreateScreen(context);

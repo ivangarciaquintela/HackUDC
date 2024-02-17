@@ -17,12 +17,15 @@ class _SearchScreenPageState extends State<SearchScreen> {
   final FormController formController = FormController();
   late Future<List<FormShortItem>> formTypesFuture;
   late Future<List<FormShortItem>> formShortsFuture;
+  bool _isSearching = false;
+
   void _search() {
     // Aquí puedes implementar la lógica de búsqueda, por ejemplo, buscar en una base de datos o una lista predefinida.
     setState(() {
       // En este ejemplo, simplemente agregamos elementos aleatorios a la lista de resultados.
-      apiService.getAllForms().then((value) => print(value));
-      _searchResults = List.generate(10, (index) => 'Resultado $index');
+      _searchResults = formShorts.where((formShortItem) {
+      return formShortItem.titleField.toLowerCase().contains(query.toLowerCase());
+    }).toList();
     });
   }
 
@@ -35,31 +38,42 @@ class _SearchScreenPageState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Búsqueda de Formularios'),
+       appBar: AppBar(
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Buscar por id...',
+                  border: InputBorder.none,
+                ),
+                onSubmitted: (_) => _search(),
+              )
+            : Text('Búsqueda de Formularios'),
+        actions: [
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 200),
+            child: _isSearching
+                ? IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = false;
+                      });
+                    },
+                  )
+                : IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        _isSearching = true;
+                      });
+                    },
+                  ),
+          ),
+        ],
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.0),
-                ElevatedButton(
-                  onPressed: _search,
-                  child: Icon(Icons.search),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: FutureBuilder<List<FormShortItem>>(
               future: formShortsFuture,

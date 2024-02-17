@@ -37,7 +37,7 @@ class _FormularioScreenState extends State<ReadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulario ${widget.formShortItem.formId}'),
+        title: Text('Formulario ${widget.formShortItem.titleField}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.send),

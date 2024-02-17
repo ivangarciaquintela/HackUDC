@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 
 class DynamicFormField extends StatefulWidget {
   final FormFieldSchema schema;
-  final void Function(String?)? onChanged; // Función de devolución de llamada para manejar el cambio de valor
+  final void Function(String?)?
+      onChanged; // Función de devolución de llamada para manejar el cambio de valor
 
   DynamicFormField({required this.schema, this.onChanged});
 
@@ -36,9 +37,11 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
 
   Widget _buildField(BuildContext context) {
     switch (widget.schema.fieldType.toLowerCase()) {
-      case 'text': case 'string':
-        return TextFormField(maxLines: null, // Allows for multiple lines
-                keyboardType: TextInputType.multiline,
+      case 'text':
+      case 'string':
+        return TextFormField(
+          maxLines: null, // Allows for multiple lines
+          keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
             hintText: widget.schema.fieldDescription,
             hintStyle: TextStyle(color: Colors.blueGrey),
@@ -46,74 +49,117 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
           readOnly: widget.schema.fieldReadonly ?? false,
           initialValue: widget.schema.fieldDefaultValue,
           onChanged: (value) {
-            _fieldValue = value; // Almacenar el valor del campo en la variable local
+            _fieldValue =
+                value; // Almacenar el valor del campo en la variable local
             if (widget.onChanged != null) {
-              widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
+              widget.onChanged!(
+                  _fieldValue); // Invocar la función de devolución de llamada
             }
           },
         );
-      case 'number': case 'int' : case 'int32' : case 'int64' :
+      case 'number':
+      case 'int':
+      case 'int32':
+      case 'int64':
         return TextFormField(
-          decoration: InputDecoration(
-          hintText: widget.schema.fieldDescription,
-          hintStyle: TextStyle(color: Colors.blueGrey), 
-        ),
-        readOnly: widget.schema.fieldReadonly ?? false,
-        initialValue: widget.schema.fieldDefaultValue?.toString(),
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-        ],
-        onChanged: (value) {
-          _fieldValue = value; // Almacenar el valor del campo en la variable local
-          if (widget.onChanged != null) {
-            widget.onChanged!(_fieldValue); // Invocar la función de devolución de llamada
-          }
-    },
-  );
-      case 'date': case 'datetime' :
-      return InkWell(
-        onTap: () {
-          _selectDate(context);
-        },
-        child: InputDecorator(
           decoration: InputDecoration(
             hintText: widget.schema.fieldDescription,
             hintStyle: TextStyle(color: Colors.blueGrey),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(_selectedDate != null
-                  ? DateFormat.yMMMd().format(_selectedDate!)
-                  : 'Seleccionar Fecha'),
-              Icon(Icons.calendar_today),
-            ],
+          readOnly: widget.schema.fieldReadonly ?? false,
+          initialValue: widget.schema.fieldDefaultValue?.toString(),
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          ],
+          onChanged: (value) {
+            _fieldValue = value;
+            if (widget.onChanged != null) {
+              widget.onChanged!(_fieldValue);
+            }
+          },
+        );
+      case 'date':
+      case 'datetime':
+        return InkWell(
+          onTap: () {
+            _selectDate(context);
+          },
+          child: InputDecorator(
+            decoration: InputDecoration(
+              hintText: widget.schema.fieldDescription,
+              hintStyle: TextStyle(color: Colors.blueGrey),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(_selectedDate != null
+                    ? DateFormat.yMMMd().format(_selectedDate!)
+                    : 'Seleccionar Fecha'),
+                Icon(Icons.calendar_today),
+              ],
+            ),
           ),
-        ),
-      );
-      case 'select': case 'selection' :
-        return Container(); // Implementa según tu solución.
-      case 'boolean': case 'checkbox' :
+        );
+      case 'select':
+      case 'selection':
+        var options =
+            widget.schema.fieldValidations?['options'] as List<dynamic>?;
+        _fieldValue = _fieldValue ?? widget.schema.fieldDefaultValue;
+
+        bool isValueInOptions = options?.contains(_fieldValue) ?? false;
+        if (!isValueInOptions && _fieldValue != null) {
+          _fieldValue = null;
+        }
+
+        if (options != null && options.isNotEmpty) {
+          return DropdownButtonFormField<String>(
+            value: _fieldValue,
+            decoration: InputDecoration(
+              hintText: widget.schema.fieldDescription,
+              hintStyle: TextStyle(color: Colors.blueGrey),
+            ),
+            onChanged: (String? newValue) {
+              setState(() {
+                _fieldValue = newValue;
+                if (widget.onChanged != null) {
+                  widget.onChanged!(_fieldValue);
+                }
+              });
+            },
+            items: options.map<DropdownMenuItem<String>>((dynamic value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          );
+        } else {
+          return Text('No hay opciones disponibles',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 20,
+              ));
+        }
+      case 'boolean':
+      case 'checkbox':
         return CheckboxListTile(
           value: _fieldValue ?? widget.schema.fieldDefaultValue ?? false,
           onChanged: (bool? value) {
-          setState(() {
-            _fieldValue = value;
-          if (widget.onChanged != null) {
-          widget.onChanged!(_fieldValue.toString());
-        }
-      });
-    },
+            setState(() {
+              _fieldValue = value;
+              if (widget.onChanged != null) {
+                widget.onChanged!(_fieldValue.toString());
+              }
+            });
+          },
         );
       default:
-        return Text('Tipo de campo no soportado'
-          ,style: TextStyle(
-              color: Colors.red, // Cambia el color del texto a rojo
-              fontSize: 20, // Puedes ajustar el tamaño del texto según sea necesario
-            )
-        
-         );
+        return Text('Tipo de campo no soportado',
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 20,
+            ));
     }
   }
 

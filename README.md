@@ -22,10 +22,20 @@ flutter pub get
 flutter run
 ```
 
+## Uso
+Una vez instalada, DisaForm te permitirá:
+
+- **Rellenar Formularios**: Interactúa con la interfaz para completar los formularios que la aplicación proporciona dinámicamente.
+- **Consultar Formularios**: Accede a formularios previamente rellenados para revisión o edición.
 
 ## Dependencias
 
 - **cupertino_icons:** `^1.0.6`
 - **intl:** `^0.19.0`
 - **flutter_lints:** `^3.0.0`
-- **http:** `[versión específica]`
+- **http**
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia Pública General de GNU, versión 3 (GPLv3). Esto garantiza a los usuarios la libertad de compartir y cambiar todas las versiones del programa para asegurar que el software sea libre para todos sus usuarios. Para más detalles, puedes consultar el texto completo de la licencia en [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.html).
+

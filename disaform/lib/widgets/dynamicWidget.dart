@@ -37,7 +37,8 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
   Widget _buildField(BuildContext context) {
     switch (widget.schema.fieldType.toLowerCase()) {
       case 'text': case 'string':
-        return TextFormField(
+        return TextFormField(maxLines: null, // Allows for multiple lines
+                keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
             hintText: widget.schema.fieldDescription,
             hintStyle: TextStyle(color: Colors.blueGrey),
@@ -78,6 +79,7 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
         child: InputDecorator(
           decoration: InputDecoration(
             hintText: widget.schema.fieldDescription,
+            hintStyle: TextStyle(color: Colors.blueGrey),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,7 +107,13 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
     },
         );
       default:
-        return Text('Tipo de campo no soportado');
+        return Text('Tipo de campo no soportado'
+          ,style: TextStyle(
+              color: Colors.red, // Cambia el color del texto a rojo
+              fontSize: 20, // Puedes ajustar el tamaño del texto según sea necesario
+            )
+        
+         );
     }
   }
 

@@ -17,6 +17,8 @@ class _FormularioScreenState extends State<FormularioScreen> {
   final FormTypeController apiService = FormTypeController();
   late Future<FormSchema> _formSchemaFuture;
   late FormSchema _formSchema;
+  late Map<int, dynamic> _fieldValues = {}; // Mapa para almacenar los valores de los campos
+
   
   @override
   void initState() {
@@ -56,12 +58,28 @@ class _FormularioScreenState extends State<FormularioScreen> {
     );
   }
 
+  void _sendForm() {
+    // Imprime los valores almacenados en el mapa
+    print('Valores del formulario:');
+    _fieldValues.forEach((key, value) {
+      print('$key: $value');
+    });
+    // Aquí puedes realizar otras acciones con los valores del formulario, como enviarlos a través de una solicitud HTTP, etc.
+  }
+
   Widget buildFormListView() {
     return ListView.builder(
       itemCount: _formSchema.formFields.length,
       itemBuilder: (context, index) {
         FormFieldSchema formField = _formSchema.formFields[index];
-        return DynamicFormField(schema: formField);
+        
+        return DynamicFormField(
+          schema: formField,
+          onChanged: (value) {
+            // Almacena el valor del campo en el mapa
+            _fieldValues[formField.fieldId] = value;
+          },
+        );
       },
     );
   }

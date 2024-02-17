@@ -5,17 +5,18 @@ import 'package:intl/intl.dart';
 
 class DynamicFormField extends StatefulWidget {
   final FormFieldSchema schema;
+  final bool highlight;
   final void Function(String?)?
       onChanged; // Función de devolución de llamada para manejar el cambio de valor
 
-  DynamicFormField({required this.schema, this.onChanged});
+  DynamicFormField({required this.schema, required this.highlight, this.onChanged});
 
   @override
   _DynamicFormFieldState createState() => _DynamicFormFieldState();
 }
 
 class _DynamicFormFieldState extends State<DynamicFormField> {
-  dynamic? _fieldValue; // Variable para almacenar el valor del campo
+  dynamic _fieldValue; // Variable para almacenar el valor del campo
 
   @override
   Widget build(BuildContext context) {

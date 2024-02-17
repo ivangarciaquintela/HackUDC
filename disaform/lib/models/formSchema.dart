@@ -1,6 +1,5 @@
 import 'package:disaform/models/formFieldSchema.dart';
 import 'package:disaform/models/formGroupSchema.dart';
-import 'package:flutter/material.dart';
 
 class FormSchema {
   final int formTypeId;
@@ -45,5 +44,8 @@ class FormSchema {
       'form_fields': formFields.map((field) => field.toJson()).toList(),
       'form_groups': formGroups,
     };
+  }
+  int getFormTypeId() {
+    return formTypeId;
   }
 }

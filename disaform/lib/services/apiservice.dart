@@ -50,11 +50,14 @@ class ApiService {
   }
 
   Future<void> postForm(FormItem formItem) async {
-    final response = await http.post(Uri.parse(URI + 'api/v1/forms'),
+    Map<String, String> headers = {
+      'mock': '1',
+    };
+    final response = await http.post(Uri.parse(URI + 'api/v1/forms'), headers: headers,
         body: formItem.toJson());
 
     if (response.statusCode == 201) {
-
+      print('Post correcto');
     } else {
       print(response.statusCode);
       throw Exception("Error al enviar el formulario");

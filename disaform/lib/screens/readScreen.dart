@@ -59,14 +59,6 @@ class _FormularioScreenState extends State<ReadScreen> {
     );
   }
 
-  void _sendForm() {
-    // Imprime los valores almacenados en el mapa
-    print('Valores del formulario:');
-    _fieldValues.forEach((key, value) {
-      print('$key: $value');
-    });
-    // Aquí puedes realizar otras acciones con los valores del formulario, como enviarlos a través de una solicitud HTTP, etc.
-  }
 
   Widget buildFormListView(FormItem formItem) {
     return ListView.builder(

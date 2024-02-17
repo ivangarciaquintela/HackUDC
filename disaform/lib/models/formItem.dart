@@ -1,10 +1,11 @@
 import 'package:disaform/models/formField.dart';
+import 'package:disaform/models/formFieldSchema.dart';
 
 class FormItem {
   final int formId;
   final int formTypeId;
   final String titleField;
-  final List<FormField> formFields;
+  List<FormField> formFields = [];
 
   FormItem(
       {required this.formId,
@@ -17,10 +18,7 @@ class FormItem {
       formId: json['form_id'],
       formTypeId: json['form_type_id'],
       titleField: json['title_field'],
-      formFields: (json['form_fields'] as List)
-          .map((i) => FormField.fromJson(i))
-          .toList(),
-    );
+      formFields: (json['form_fields'] as List? ?? []).map((item) => FormField.fromJson(item)).toList(),    );
   }
 
   Map<String, dynamic> toJson() {

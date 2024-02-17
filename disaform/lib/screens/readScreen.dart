@@ -39,14 +39,6 @@ class _FormularioScreenState extends State<ReadScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulario ${widget.formShortItem.titleField}'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () {
-              print('Formulario ${widget.formShortItem.formId} enviado');
-            },
-          ),
-        ],
       ),
       body: Center(
         child: FutureBuilder(

@@ -44,7 +44,7 @@ class FormFieldSchema {
       fieldReadonly: json['field_readonly'],
       fieldDefaultValue: json['field_default_value'],
       fieldGroup: json['field_group'] ?? "",
-      fieldDependentOn: json['field_dependent_on'] != null ? FormField(fieldId: int.parse(json['field_dependent_on']['field_id']), value: json['field_dependent_on']['field_value']) : null,
+      fieldDependentOn: json['field_dependent_on'] != null ? FormField(fieldId: json['field_dependent_on']['field_id'], value: json['field_dependent_on']['field_value']) : null,
       fieldValidations: json['field_validations'],
     );
   }
@@ -60,8 +60,8 @@ class FormFieldSchema {
       'field_readonly': fieldReadonly,
       'field_default_value': fieldDefaultValue,
       'field_group': fieldGroup,
-      'field_dependent_on': fieldDependentOn,
-      'field_validations': fieldValidations,
+      //'field_dependent_on': fieldDependentOn,
+      //'field_validations': fieldValidations,
     };
   }
 }

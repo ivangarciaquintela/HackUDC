@@ -1,3 +1,4 @@
+import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/screens/formScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:disaform/models/formType.dart'; // Asegúrate de que la ruta sea correcta
@@ -9,7 +10,7 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final ApiService apiService = ApiService();
+  final FormTypeController apiService = FormTypeController();
   late Future<List<FormType>> formTypesFuture;
 
   @override

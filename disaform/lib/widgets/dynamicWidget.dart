@@ -15,7 +15,7 @@ class DynamicFormField extends StatelessWidget {
             labelText: schema.fieldName,
             hintText: schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly,
+          readOnly: schema.fieldReadonly?? false,
           initialValue: schema.fieldDefaultValue,
         );
       case 'number':
@@ -24,7 +24,7 @@ class DynamicFormField extends StatelessWidget {
             labelText: schema.fieldName,
             hintText: schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly,
+          readOnly: schema.fieldReadonly?? false,
           initialValue: schema.fieldDefaultValue?.toString(),
           keyboardType: TextInputType.number,
         );

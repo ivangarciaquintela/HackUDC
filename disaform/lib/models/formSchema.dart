@@ -1,4 +1,5 @@
 import 'package:disaform/models/formFieldSchema.dart';
+import 'package:disaform/models/formGroupSchema.dart';
 import 'package:flutter/material.dart';
 
 class FormSchema {
@@ -9,7 +10,7 @@ class FormSchema {
   final String titleField;
   final List<FormFieldSchema>
       formFields; // Assuming FormFieldSchema is defined elsewhere
-  final List<String> formGroups; // List of group identifiers
+  final List<FormGroupSchema>? formGroups; // List of group identifiers
 
   FormSchema({
     required this.formTypeId,
@@ -17,7 +18,7 @@ class FormSchema {
     this.formTypeDescription,
     required this.titleField,
     required this.formFields,
-    required this.formGroups,
+    this.formGroups,
   });
 
   factory FormSchema.fromJson(Map<String, dynamic> json) {
@@ -29,7 +30,9 @@ class FormSchema {
       formFields: (json['form_fields'] as List)
           .map((item) => FormFieldSchema.fromJson(item))
           .toList(),
-      formGroups: List<String>.from(json['form_groups']),
+      formGroups: (json['form_group'] as List? ?? [])
+          .map((item) => FormGroupSchema.fromJson(item))
+          .toList(),
     );
   }
 

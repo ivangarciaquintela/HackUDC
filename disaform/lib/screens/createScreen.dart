@@ -1,47 +1,15 @@
-import 'package:disaform/controller/form_type_controller.dart';
+import 'package:disaform/screens/formScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:disaform/models/formType.dart'; // Asegúrate de que la ruta sea correcta
 import 'package:disaform/services/apiservice.dart'; // Asegúrate de que la ruta sea correcta
 
-class FormularioScreen extends StatelessWidget {
-  final int formularioId;
-
-  FormularioScreen({required this.formularioId});
-
+class CreateScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Formulario $formularioId'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () {
-              print('Formulario $formularioId enviado');
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Text('Este es el formulario $formularioId'),
-      ),
-    );
-  }
+  _CreateScreenState createState() => _CreateScreenState();
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: MainScreen(),
-  ));
-}
-
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  final FormTypeController apiService = FormTypeController();
+class _CreateScreenState extends State<CreateScreen> {
+  final ApiService apiService = ApiService();
   late Future<List<FormType>> formTypesFuture;
 
   @override
@@ -54,7 +22,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pantalla Principal'),
+        title: new Center(
+            child: new Text('Selección de formulario',
+                textAlign: TextAlign.center)),
       ),
       body: FutureBuilder<List<FormType>>(
         future: formTypesFuture,

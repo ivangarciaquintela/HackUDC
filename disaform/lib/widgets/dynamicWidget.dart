@@ -8,33 +8,45 @@ class DynamicFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            schema.fieldName,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10.0),
+          _buildField(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildField(BuildContext context) {
     switch (schema.fieldType) {
       case 'text':
         return TextFormField(
           decoration: InputDecoration(
-            labelText: schema.fieldName,
             hintText: schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly?? false,
+          readOnly: schema.fieldReadonly ?? false,
           initialValue: schema.fieldDefaultValue,
         );
       case 'number':
         return TextFormField(
           decoration: InputDecoration(
-            labelText: schema.fieldName,
             hintText: schema.fieldDescription,
           ),
-          readOnly: schema.fieldReadonly?? false,
+          readOnly: schema.fieldReadonly ?? false,
           initialValue: schema.fieldDefaultValue?.toString(),
           keyboardType: TextInputType.number,
         );
       case 'date':
-        // Aquí podrías necesitar un paquete externo como 'flutter_datetime_picker'
-        // para implementar un selector de fecha, o construir uno propio.
-        return Container(); // Placeholder, implementa según tu solución.
+        return Container(); // Implementa según tu solución.
       case 'selection':
-        // Este caso podría implementarse usando DropdownButton o un widget similar.
-        return Container(); // Placeholder, implementa según tu solución.
+        return Container(); // Implementa según tu solución.
       case 'checkbox':
         return CheckboxListTile(
           title: Text(schema.fieldName),

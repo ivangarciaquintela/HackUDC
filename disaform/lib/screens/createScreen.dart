@@ -1,4 +1,3 @@
-import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/screens/formScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:disaform/models/formType.dart'; // Asegúrate de que la ruta sea correcta
@@ -10,7 +9,7 @@ class CreateScreen extends StatefulWidget {
 }
 
 class _CreateScreenState extends State<CreateScreen> {
-  final FormTypeController apiService = FormTypeController();
+  final ApiService apiService = ApiService();
   late Future<List<FormType>> formTypesFuture;
 
   @override
@@ -23,9 +22,8 @@ class _CreateScreenState extends State<CreateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: new Center(
-            child: new Text('Selección de formulario',
-                textAlign: TextAlign.center)),
+        title: new Center(child: new Text('Selección de formulario', textAlign: TextAlign.center)),
+       
       ),
       body: FutureBuilder<List<FormType>>(
         future: formTypesFuture,

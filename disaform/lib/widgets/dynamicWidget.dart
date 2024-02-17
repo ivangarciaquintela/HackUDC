@@ -1,5 +1,6 @@
 import 'package:disaform/models/formFieldSchema.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DynamicFormField extends StatefulWidget {
   final FormFieldSchema schema;
@@ -64,8 +65,26 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
           },
         );
       case 'date':
-        return Container();
-      case 'selection':
+      return InkWell(
+        onTap: () {
+          _selectDate(context);
+        },
+        child: InputDecorator(
+          decoration: InputDecoration(
+            hintText: widget.schema.fieldDescription,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(_selectedDate != null
+                  ? DateFormat.yMMMd().format(_selectedDate!)
+                  : 'Seleccionar Fecha'),
+              Icon(Icons.calendar_today),
+            ],
+          ),
+        ),
+      );
+      case 'select':
         return Container(); // Implementa según tu solución.
       case 'checkbox':
         return CheckboxListTile(
@@ -78,4 +97,22 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
     }
   }
 
+  DateTime? _selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        if (widget.onChanged != null) {
+          widget.onChanged!(_selectedDate.toString());
+        }
+      });
+    }
+  }
 }

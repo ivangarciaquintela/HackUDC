@@ -107,17 +107,21 @@ Widget buildFormListView(FormItem formItem) {
     // Agregamos un encabezado para el grupo si existe
     if (groupName.isNotEmpty) {
       widgets.add(
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            groupName,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+  Container(
+    color: Colors.grey.withOpacity(0.05), // Color gris con opacidad 0.5
+    child: Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Text(
+        groupName,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.red[800],
         ),
-      );
+      ),
+    ),
+  ),
+);
     }
     
     // Agregamos los campos del grupo
@@ -142,4 +146,5 @@ Widget buildFormListView(FormItem formItem) {
     children: widgets,
   );
 }
+
 }

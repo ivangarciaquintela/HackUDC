@@ -17,6 +17,7 @@ class _SearchScreenPageState extends State<SearchScreen> {
   final FormController formController = FormController();
   bool _isSearching = false;
   String? _selectedFormTypeName;
+  bool _isLoading = true;
 
   void _search(String query) {
     final results = _isSearching
@@ -95,6 +96,7 @@ class _SearchScreenPageState extends State<SearchScreen> {
       setState(() {
         _allForms = forms;
         _filteredForms = forms;
+        _isLoading = false;
       });
     });
   }
@@ -132,36 +134,39 @@ class _SearchScreenPageState extends State<SearchScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          if (_selectedFormTypeName != null)
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Chip(
-                label: Text('Filtrado por: $_selectedFormTypeName'),
-                onDeleted: () {
-                  _filterForms();
-                },
-              ),
-            ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredForms.length,
-              itemBuilder: (context, index) {
-                final form = _filteredForms[index];
-                return ListTile(
-                  title: Text(form.titleField),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ReadScreen(formShortItem: form)),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                if (_selectedFormTypeName != null)
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Chip(
+                      label: Text('Filtrado por: $_selectedFormTypeName'),
+                      onDeleted: () {
+                        _filterForms();
+                      },
+                    ),
                   ),
-                );
-              },
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredForms.length,
+                    itemBuilder: (context, index) {
+                      final form = _filteredForms[index];
+                      return ListTile(
+                        title: Text(form.titleField),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ReadScreen(formShortItem: form)),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

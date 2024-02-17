@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:disaform/controller/form_controller.dart';
 import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/models/formFieldSchema.dart';
@@ -69,22 +66,34 @@ class _FormularioScreenState extends State<FormularioScreen> {
   }
 
   void _sendForm() {
-    // Imprime los valores almacenados en el mapa
-    //print('Valores del formulario:');
-    //_fieldValues.forEach((key, value) {
-    //  print('$key: $value');
-    //});
-
       Map<String, dynamic> body = _fieldValues.map((key, value) => MapEntry(key.toString(), value));
       body['form_id'] = widget.formularioId;
       body['form_type_id'] = _formSchema.formTypeId;
       body['title_field'] = _formSchema.titleField;
       FormItem form = FormItem.fromJson(body);
+      //validate?
       apiService2.postForm(form);
-
-
-    // Aquí puedes realizar otras acciones con los valores del formulario, como enviarlos a través de una solicitud HTTP, etc.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Formulario enviado'),
+            content: Text('El formulario se ha enviado exitosamente.'),
+            actions: [
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.pop(context); // Cerrar el diálogo
+                  Navigator.pop(context); // Volver a la pantalla principal
+                  Navigator.pop(context); //volver volver
+                },
+              ),
+            ],
+          );
+        },
+      );
   }
+
 
   Widget buildFormListView() {
     return ListView.builder(

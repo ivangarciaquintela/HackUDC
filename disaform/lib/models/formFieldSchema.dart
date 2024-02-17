@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:disaform/models/formField.dart';
 
 class FormFieldSchema {
@@ -45,7 +43,7 @@ class FormFieldSchema {
       fieldDefaultValue: json['field_default_value'],
       fieldGroup: json['field_group'] ?? "",
       fieldDependentOn: json['field_dependent_on'] != null ? FormField(fieldId: json['field_dependent_on']['field_id'], value: json['field_dependent_on']['field_value']) : null,
-      fieldValidations: json['field_validations'],
+      fieldValidations: json['field_validations'] as Map<String, dynamic>?,
     );
   }
 
@@ -61,7 +59,8 @@ class FormFieldSchema {
       'field_default_value': fieldDefaultValue,
       'field_group': fieldGroup,
       //'field_dependent_on': fieldDependentOn,
-      //'field_validations': fieldValidations,
+      'field_validations': fieldValidations,
     };
   }
+  
 }

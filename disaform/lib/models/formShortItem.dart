@@ -1,5 +1,3 @@
-import 'package:disaform/models/formField.dart';
-
 class FormShortItem {
   final int formId;
   final int formTypeId;

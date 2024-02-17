@@ -1,6 +1,4 @@
-import 'package:disaform/models/formField.dart';
 import 'package:disaform/models/formFieldSchema.dart';
-import 'package:disaform/models/formShortItem.dart';
 
 class FormPost {
   int form_id;

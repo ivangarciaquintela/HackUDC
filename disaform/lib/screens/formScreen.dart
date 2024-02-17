@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:disaform/controller/form_controller.dart';
 import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/models/formFieldSchema.dart';
@@ -72,12 +70,11 @@ class _FormularioScreenState extends State<FormularioScreen> {
         .toList();
     Map<String, dynamic> body = {"form_fields": fields};
 
-    //body['form_id'] = widget.formularioId;
     body['form_type_id'] = _formSchema.formTypeId;
     body['title_field'] = _formSchema.titleField;
 
     FormItem form = FormItem.fromJson(body);
-    if (validate_form(_formSchema, form)) {
+    if (validate_form(_formSchema, form) ) {
       apiService2.postForm(form);
       showDialog(
         context: context,

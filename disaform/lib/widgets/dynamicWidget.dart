@@ -26,6 +26,8 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
     }
     return Container(
       margin: EdgeInsets.all(10.0),
+    child: Form(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,7 +39,7 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
           _buildField(context),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildField(BuildContext context) {
@@ -61,6 +63,8 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
                   _fieldValue); // Invocar la función de devolución de llamada
             }
           },
+          validator: (value) => 
+          _validateField(_fieldValue),
         );
       case 'number':
       case 'int':
@@ -83,6 +87,8 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
               widget.onChanged!(_fieldValue);
             }
           },
+          validator: (value) => 
+          _validateField(_fieldValue),
         );
       case 'date':
       case 'datetime':
@@ -108,8 +114,8 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
         );
       case 'select':
       case 'selection':
-        var options =
-            widget.schema.fieldValidations?['options'] as List<dynamic>?;
+        var options = widget.schema.fieldValidations?['options'] as List<dynamic>?;
+
         _fieldValue = _fieldValue ?? widget.schema.fieldDefaultValue;
 
         bool isValueInOptions = options?.contains(_fieldValue) ?? false;
@@ -186,4 +192,37 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
       });
     }
   }
+
+
+
+  String? _validateField(dynamic value) {
+  Map<String, dynamic>? fieldValidations = widget.schema.fieldValidations;
+    
+    if (fieldValidations != null && value != null && value.toString().isNotEmpty) {
+          print(fieldValidations.toString());
+
+          if (fieldValidations.containsKey('min_value') && (int.parse(value) < fieldValidations['min_value'])) 
+            return "Error, valor mínimo = ${fieldValidations['min_value']} ";
+          
+          if (fieldValidations.containsKey('max_value') && (int.parse(value) > fieldValidations['max_value'])) {
+            return "Error, valor máximo = ${fieldValidations['max_value']} ";
+          }
+          if (fieldValidations.containsKey('format')) {
+              String pattern = widget.schema.fieldValidations?['format'];
+              if (!RegExp(pattern).hasMatch(value)) return "Error, formato inadecuado";
+          }
+          if (fieldValidations.containsKey('min_length') && ((value.length) > fieldValidations['min_length'])) {
+            return "Error, longitud mínima = ${fieldValidations['min_length']} ";
+          }
+          if (fieldValidations.containsKey('max_length') && ((value.length) > fieldValidations['max_length'])) {
+            return "Error, longitud máxima = ${fieldValidations['max_length']} ";
+          }
+
+          
+    }
+  return null; // No validation errors
+}
+  
+
+
 }

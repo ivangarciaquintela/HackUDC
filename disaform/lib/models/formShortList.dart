@@ -1,4 +1,3 @@
-import 'package:disaform/models/formField.dart';
 import 'package:disaform/models/formShortItem.dart';
 
 class FormShortList {

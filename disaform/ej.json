@@ -1,0 +1,64 @@
+{
+    "form_id": 10,
+    "form_type_id": 1,
+    "title_field": "Raspberry Pi 4B",
+    "form_fields": [
+      {
+        "field_id": 1,
+        "field_value": "1234567890123456"
+      },
+      {
+        "field_id": 2,
+        "field_value": "2023-02-14"
+      },
+      {
+        "field_id": 3,
+        "field_value": "Pi 4 modelo B"
+      },
+      {
+        "field_id": 4,
+        "field_value": ""
+      },
+      {
+        "field_id": 5,
+        "field_value": "Un modelo potente y versátil, que a la vez mantiene un precio muy ajustado"
+      },
+      {
+        "field_id": 6,
+        "field_value": "Quad-core Cortex-A72 (ARM v8) 64-bit SoC @ 1.5GHz"
+      },
+      {
+        "field_id": 7,
+        "field_value": "8"
+      },
+      {
+        "field_id": 8,
+        "field_value": "8GB"
+      },
+      {
+        "field_id": 9,
+        "field_value": "Si"
+      },
+      {
+        "field_id": 10,
+        "field_value": true
+      },
+      {
+        "field_id": 11,
+        "field_value": true
+      },
+      {
+        "field_id": 12,
+        "field_value": false
+      },
+      {
+        "field_id": 13,
+        "field_value": true
+      },
+      {
+        "field_id": 14,
+        "field_value": 64
+      }
+    ]
+  }
+  

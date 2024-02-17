@@ -1,5 +1,4 @@
 import 'package:disaform/models/formField.dart';
-import 'package:disaform/models/formFieldSchema.dart';
 
 class FormItem {
   final int formId;

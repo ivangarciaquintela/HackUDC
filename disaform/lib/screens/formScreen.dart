@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:disaform/controller/form_controller.dart';
 import 'package:disaform/controller/form_type_controller.dart';
 import 'package:disaform/models/formFieldSchema.dart';
@@ -66,33 +68,76 @@ class _FormularioScreenState extends State<FormularioScreen> {
   }
 
   void _sendForm() {
-      Map<String, dynamic> body = _fieldValues.map((key, value) => MapEntry(key.toString(), value));
-      body['form_id'] = widget.formularioId;
+      //Map<String, dynamic> fields = _fieldValues.map((key, value) => MapEntry(key.toString(), value));
+      //Map<String, dynamic> body = {"form_fields": [fields]};
+
+      List<Map<String, dynamic>> fields = _fieldValues.entries.map((e) => {"field_id": e.key, "field_value": e.value.toString()}).toList();
+      Map<String, dynamic> body = {"form_fields": fields};
+
+      //body['form_id'] = widget.formularioId;
       body['form_type_id'] = _formSchema.formTypeId;
       body['title_field'] = _formSchema.titleField;
+
+      print(body);
       FormItem form = FormItem.fromJson(body);
       //validate?
-      apiService2.postForm(form);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Formulario enviado'),
-            content: Text('El formulario se ha enviado exitosamente.'),
-            actions: [
-              TextButton(
-                child: Text('Aceptar'),
-                onPressed: () {
-                  Navigator.pop(context); // Cerrar el diálogo
-                  Navigator.pop(context); // Volver a la pantalla principal
-                  Navigator.pop(context); //volver volver
-                },
-              ),
-            ],
-          );
-        },
-      );
+      if(!validate_form(_formSchema, form)) {
+        print('mallll');
+      }
+      else{
+        apiService2.postForm(form);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Formulario enviado'),
+              content: Text('El formulario se ha enviado exitosamente.'),
+              actions: [
+                TextButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    Navigator.pop(context); // Cerrar el diálogo
+                    Navigator.pop(context); // Volver a la pantalla principal
+                    Navigator.pop(context); //volver volver
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+
   }
+  
+  bool validate_form(FormSchema schema, FormItem form){
+    for (FormFieldSchema field in schema.formFields){
+      if(field.fieldRequired){
+        if(form.formFields.where((element) => element.fieldId == field.fieldId && element.value != null).isEmpty){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Error'),
+                content: Text('El campo ${field.fieldName} es requerido.'),
+                actions: [
+                  TextButton(
+                    child: Text('Aceptar'),
+                    onPressed: () {
+                      Navigator.pop(context); // Cerrar el diálogo
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
 
 
   Widget buildFormListView() {

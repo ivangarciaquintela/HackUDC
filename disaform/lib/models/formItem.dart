@@ -15,7 +15,7 @@ class FormItem {
 
   factory FormItem.fromJson(Map<String, dynamic> json) {
     return FormItem(
-      formId: json['form_id'],
+      formId: json['form_id']  ?? 0,
       formTypeId: json['form_type_id'],
       titleField: json['title_field'],
       formFields: (json['form_fields'] as List? ?? []).map((item) => FormField.fromJson(item)).toList(),    );

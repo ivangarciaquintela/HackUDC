@@ -22,10 +22,9 @@ class _SearchScreenPageState extends State<SearchScreen> {
   void _search() {
     // Aquí puedes implementar la lógica de búsqueda, por ejemplo, buscar en una base de datos o una lista predefinida.
     setState(() {
-      // En este ejemplo, simplemente agregamos elementos aleatorios a la lista de resultados.
-      _searchResults = formShorts.where((formShortItem) {
-      return formShortItem.titleField.toLowerCase().contains(query.toLowerCase());
-    }).toList();
+      //_searchResults = formShorts.where((formShortItem) {
+      //return formShortItem.titleField.toLowerCase().contains(query.toLowerCase());
+    //}).toList();
     });
   }
 
@@ -35,78 +34,83 @@ class _SearchScreenPageState extends State<SearchScreen> {
     formShortsFuture = formController.getAllForms();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-       appBar: AppBar(
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Buscar por id...',
-                  border: InputBorder.none,
-                ),
-                onSubmitted: (_) => _search(),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: _isSearching
+        ? TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Buscar por id...',
+            border: InputBorder.none,
+          ),
+          onSubmitted: (_) => _search(),
+        )
+        : Text('Búsqueda de Formularios'),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.filter_alt),
+          onPressed: () {
+            _filterByTitleField();
+          },
+        ),
+        AnimatedSwitcher(
+          duration: Duration(milliseconds: 200),
+          child: _isSearching
+            ? IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = false;
+                  });
+                },
               )
-            : Text('Búsqueda de Formularios'),
-        actions: [
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            child: _isSearching
-                ? IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      setState(() {
-                        _isSearching = false;
-                      });
-                    },
-                  )
-                : IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        _isSearching = true;
-                      });
-                    },
-                  ),
+            : IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  setState(() {
+                    _isSearching = true;
+                  });
+                },
+              ),
+        ),
+      ],
+    ),
+    body: Column(
+      children: [
+        Expanded(
+          child: FutureBuilder<List<FormShortItem>>(
+            future: formShortsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                List<FormShortItem> formShorts = snapshot.data!;
+                return ListView.builder(
+                  itemCount: formShorts.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(formShorts[index].titleField),
+                      onTap: () {
+                        _navigateToReadScreen(context, formShorts[index]);
+                      },
+                    );
+                  },
+                );
+              } else {
+                return Center(child: Text('No hay datos disponibles'));
+              }
+            },
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder<List<FormShortItem>>(
-              future: formShortsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  List<FormShortItem> formShorts = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: formShorts.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(formShorts[index].titleField),
-                        onTap: () {
-                          _navigateToReadScreen(context, formShorts[index]);
-                        },
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: Text('No hay datos disponibles'));
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _navigateToReadScreen(
+        ),
+      ],
+    ),
+  );
+}
+void _navigateToReadScreen(
       BuildContext context, FormShortItem formShortItem) {
     Navigator.push(
       context,
@@ -114,4 +118,9 @@ class _SearchScreenPageState extends State<SearchScreen> {
           builder: (context) => ReadScreen(formShortItem: formShortItem)),
     );
   }
+void _filterByTitleField() {
+    setState(() {
+  });
+}
+  
 }

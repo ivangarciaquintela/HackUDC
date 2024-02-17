@@ -7,4 +7,8 @@ class FormController {
   Future<FormItem> getForm(int formId) async {
     return await apiService.getForm(formId);
   }
+
+  Future<void> postForm(FormItem formItem) async {
+    return await apiService.postForm(formItem);
+  }
 }

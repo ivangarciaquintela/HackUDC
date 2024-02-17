@@ -1,7 +1,8 @@
 import 'package:disaform/models/formFieldSchema.dart';
+import 'package:flutter/material.dart';
 
 class FormSchema {
-  final String formTypeId;
+  final int formTypeId;
   final String formTypeName;
   final String?
       formTypeDescription; // Optional since not all forms might have a description
@@ -24,7 +25,7 @@ class FormSchema {
       formTypeId: json['form_type_id'],
       formTypeName: json['form_type_name'],
       formTypeDescription: json['form_type_description'],
-      titleField: json['title_field'],
+      titleField: json['title_field']['field_description'],
       formFields: (json['form_fields'] as List)
           .map((item) => FormFieldSchema.fromJson(item))
           .toList(),

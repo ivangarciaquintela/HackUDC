@@ -58,6 +58,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   ApiService apiService = ApiService();
+  final int formTypeId = 1; // int | Unique identifier of a form type.
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -65,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      apiService.getFormTypes();
+      apiService.getFormType(1);
       _counter++;
     });
   }

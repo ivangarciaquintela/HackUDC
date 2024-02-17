@@ -1,5 +1,5 @@
 class FormFieldSchema {
-  final String fieldId;
+  final int fieldId;
   final String fieldName;
   final String fieldType;
   final int fieldOrder;
@@ -12,8 +12,8 @@ class FormFieldSchema {
   final String fieldGroup;
   final String?
       fieldDependentOn; // Optional as not all fields might have dependencies
-  final List<dynamic>
-      fieldValidations; // dynamic to accommodate different types of validations or options
+  //final List<dynamic>
+  //fieldValidations; // dynamic to accommodate different types of validations or options
 
   FormFieldSchema({
     required this.fieldId,
@@ -26,7 +26,7 @@ class FormFieldSchema {
     this.fieldDefaultValue,
     required this.fieldGroup,
     this.fieldDependentOn,
-    required this.fieldValidations,
+    //required this.fieldValidations,
   });
 
   factory FormFieldSchema.fromJson(Map<String, dynamic> json) {
@@ -40,8 +40,8 @@ class FormFieldSchema {
       fieldReadonly: json['field_readonly'],
       fieldDefaultValue: json['field_default_value'],
       fieldGroup: json['field_group'],
-      fieldDependentOn: json['field_dependent_on'],
-      fieldValidations: json['field_validations'],
+      //fieldDependentOn: json['field_dependent_on'],
+      //fieldValidations: json['field_validations'],
     );
   }
 
@@ -56,8 +56,8 @@ class FormFieldSchema {
       'field_readonly': fieldReadonly,
       'field_default_value': fieldDefaultValue,
       'field_group': fieldGroup,
-      'field_dependent_on': fieldDependentOn,
-      'field_validations': fieldValidations,
+      //'field_dependent_on': fieldDependentOn,
+      //'field_validations': fieldValidations,
     };
   }
 }

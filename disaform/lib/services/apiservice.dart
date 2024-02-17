@@ -1,3 +1,4 @@
+import 'package:disaform/models/formItem.dart';
 import 'package:disaform/models/formSchema.dart';
 import 'package:disaform/models/formType.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +27,21 @@ class ApiService {
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(response.body);
       FormSchema form = FormSchema.fromJson(body);
-      print(form.formTypeName);
       return form;
     } else {
       throw Exception('Error al cargar los formularios');
+    }
+  }
+
+  Future<FormItem> getForm(int formId) async {
+    final response =
+        await http.get(Uri.parse(URI + 'api/v1/forms/' + formId.toString()));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = jsonDecode(response.body);
+      FormItem form = FormItem.fromJson(body);
+      return form;
+    } else {
+      throw Exception('Error al cargar el formulario');
     }
   }
 }

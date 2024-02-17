@@ -15,6 +15,14 @@ class DynamicReadFieldDisplay extends StatefulWidget {
 class _DynamicReadFieldDisplayState extends State<DynamicReadFieldDisplay> {
   @override
   Widget build(BuildContext context) {
+    if (widget.schema.fieldType.toLowerCase() != 'boolean' &&
+        widget.schema.fieldType.toLowerCase() != 'checkbox') {
+      if (widget.schema.fieldDefaultValue == null ||
+          (widget.schema.fieldDefaultValue is String &&
+              widget.schema.fieldDefaultValue!.isEmpty)) {
+        return Container(); // Devuelve un contenedor vacío si el valor es null o ''
+      }
+    }
     return Container(
       margin: EdgeInsets.all(10.0),
       child: Column(

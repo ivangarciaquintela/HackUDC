@@ -29,7 +29,7 @@ class FormSchema {
       formFields: (json['form_fields'] as List)
           .map((item) => FormFieldSchema.fromJson(item))
           .toList(),
-      formGroups: (json['form_group'] as List? ?? [])
+      formGroups: (json['form_groups'] as List? ?? [])
           .map((item) => FormGroupSchema.fromJson(item))
           .toList(),
     );

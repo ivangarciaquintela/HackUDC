@@ -20,11 +20,10 @@ class _SearchScreenPageState extends State<SearchScreen> {
   bool _isLoading = true;
 
   void _search(String query) {
-    final results = _isSearching
-        ? _allForms.where((form) {
-            return form.titleField.toLowerCase().contains(query.toLowerCase());
-          }).toList()
-        : _allForms;
+    List<FormShortItem> baseForms = _isSearching ? _filteredForms : _allForms;
+    final results = baseForms.where((form) {
+      return form.titleField.toLowerCase().contains(query.toLowerCase());
+    }).toList();
 
     setState(() {
       _filteredForms = results;
@@ -37,6 +36,9 @@ class _SearchScreenPageState extends State<SearchScreen> {
         return _selectedFormTypes[form.formTypeId] ?? false;
       }).toList();
     });
+    if (_isSearching && _searchController.text.isNotEmpty) {
+      _search(_searchController.text);
+    }
   }
 
   Future<void> _showFilterDialog() async {
@@ -123,7 +125,11 @@ class _SearchScreenPageState extends State<SearchScreen> {
                 _isSearching = !_isSearching;
                 if (!_isSearching) {
                   _searchController.clear();
-                  _search('');
+                  // Llama a _filterForms para asegurarte de que los formularios mostrados respeten el filtro aplicado.
+                  _filterForms();
+                } else {
+                  // Si el usuario activa la búsqueda, asegúrate de que la lista de formularios filtrados se base en el estado actual del filtro.
+                  _search(_searchController.text);
                 }
               });
             },

@@ -7,8 +7,10 @@ class DynamicFormField extends StatefulWidget {
   final FormFieldSchema schema;
   final void Function(String?)?
       onChanged; // Función de devolución de llamada para manejar el cambio de valor
+  final bool isVisible;
 
-  DynamicFormField({required this.schema, this.onChanged});
+  DynamicFormField(
+      {required this.schema, this.onChanged, this.isVisible = true});
 
   @override
   _DynamicFormFieldState createState() => _DynamicFormFieldState();
@@ -19,6 +21,9 @@ class _DynamicFormFieldState extends State<DynamicFormField> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.isVisible) {
+      return Container(); // Vacio si no es visible
+    }
     return Container(
       margin: EdgeInsets.all(10.0),
       child: Column(

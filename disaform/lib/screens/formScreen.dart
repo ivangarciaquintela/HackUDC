@@ -20,14 +20,14 @@ class FormularioScreen extends StatefulWidget {
 
 class _FormularioScreenState extends State<FormularioScreen> {
   final FormTypeController apiService = FormTypeController();
-    final FormController apiService2 = FormController();
+  final FormController apiService2 = FormController();
 
   late Future<FormSchema> _formSchemaFuture;
   late FormSchema _formSchema;
   int formTypeId = 0;
-  late Map<int, dynamic> _fieldValues = {}; // Mapa para almacenar los valores de los campos
+  late Map<int, dynamic> _fieldValues =
+      {}; // Mapa para almacenar los valores de los campos
 
-  
   @override
   void initState() {
     super.initState();
@@ -68,51 +68,51 @@ class _FormularioScreenState extends State<FormularioScreen> {
   }
 
   void _sendForm() {
-      //Map<String, dynamic> fields = _fieldValues.map((key, value) => MapEntry(key.toString(), value));
-      //Map<String, dynamic> body = {"form_fields": [fields]};
+    List<Map<String, dynamic>> fields = _fieldValues.entries
+        .map((e) => {"field_id": e.key, "field_value": e.value.toString()})
+        .toList();
+    Map<String, dynamic> body = {"form_fields": fields};
 
-      List<Map<String, dynamic>> fields = _fieldValues.entries.map((e) => {"field_id": e.key, "field_value": e.value.toString()}).toList();
-      Map<String, dynamic> body = {"form_fields": fields};
+    //body['form_id'] = widget.formularioId;
+    body['form_type_id'] = _formSchema.formTypeId;
+    body['title_field'] = _formSchema.titleField;
 
-      //body['form_id'] = widget.formularioId;
-      body['form_type_id'] = _formSchema.formTypeId;
-      body['title_field'] = _formSchema.titleField;
-
-      print(body);
-      FormItem form = FormItem.fromJson(body);
-      //validate?
-      if(!validate_form(_formSchema, form)) {
-        print('mallll');
-      }
-      else{
-        apiService2.postForm(form);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Formulario enviado'),
-              content: Text('El formulario se ha enviado exitosamente.'),
-              actions: [
-                TextButton(
-                  child: Text('Aceptar'),
-                  onPressed: () {
-                    Navigator.pop(context); // Cerrar el diálogo
-                    Navigator.pop(context); // Volver a la pantalla principal
-                    Navigator.pop(context); //volver volver
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-
+    print(body);
+    FormItem form = FormItem.fromJson(body);
+    //validate?
+    if (!validate_form(_formSchema, form)) {
+      print('mallll');
+    } else {
+      apiService2.postForm(form);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Formulario enviado'),
+            content: Text('El formulario se ha enviado exitosamente.'),
+            actions: [
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.pop(context); // Cerrar el diálogo
+                  Navigator.pop(context); // Volver a la pantalla principal
+                  Navigator.pop(context); //volver volver
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-  
-  bool validate_form(FormSchema schema, FormItem form){
-    for (FormFieldSchema field in schema.formFields){
-      if(field.fieldRequired){
-        if(form.formFields.where((element) => element.fieldId == field.fieldId && element.value != null).isEmpty){
+
+  bool validate_form(FormSchema schema, FormItem form) {
+    for (FormFieldSchema field in schema.formFields) {
+      if (field.fieldRequired) {
+        if (form.formFields
+            .where((element) =>
+                element.fieldId == field.fieldId && element.value != null)
+            .isEmpty) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -137,23 +137,36 @@ class _FormularioScreenState extends State<FormularioScreen> {
     return true;
   }
 
-
-
-
   Widget buildFormListView() {
     return ListView.builder(
       itemCount: _formSchema.formFields.length,
       itemBuilder: (context, index) {
         FormFieldSchema formField = _formSchema.formFields[index];
-        
+
         return DynamicFormField(
           schema: formField,
+          isVisible:
+              shouldShow(formField), // Determina si el campo debe ser visible
           onChanged: (value) {
-            // Almacena el valor del campo en el mapa
-            _fieldValues[formField.fieldId] = value;
+            //Así controlamos cuando se modifica un campo
+            setState(() {
+              _fieldValues[formField.fieldId] = value;
+            });
           },
         );
       },
     );
+  }
+
+  //Para dependencias de campos
+  bool shouldShow(FormFieldSchema formField) {
+    if (formField.fieldDependentOn != null) {
+      int? dependentFieldId = formField.fieldDependentOn?.fieldId;
+      var requiredValue = formField.fieldDependentOn?.value;
+
+      return _fieldValues.containsKey(dependentFieldId) &&
+          _fieldValues[dependentFieldId].toString() == requiredValue.toString();
+    }
+    return true;
   }
 }

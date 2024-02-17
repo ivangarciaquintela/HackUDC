@@ -1,6 +1,21 @@
+/*
+ * Autores: Anxo Castro Alonso, Ivan García Quintela, Mateo Amado Ares
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'package:disaform/controller/form_controller.dart';
 import 'package:disaform/controller/form_type_controller.dart';
-import 'package:disaform/models/formField.dart';
 import 'package:disaform/models/formFieldSchema.dart';
 
 import 'package:disaform/models/formGroupSchema.dart';
@@ -8,7 +23,6 @@ import 'package:disaform/models/formItem.dart';
 import 'package:disaform/models/formSchema.dart';
 import 'package:disaform/models/formShortItem.dart';
 import 'package:disaform/widgets/dynamicReadFieldWidget.dart';
-import 'package:disaform/widgets/dynamicWidget.dart';
 import 'package:flutter/material.dart';
 
 class ReadScreen extends StatefulWidget {
